@@ -3,3 +3,13 @@ sudo apt update
 sudo apt -y upgrade
 python3 -V
 sudo apt install -y python3-pip
+
+/* https://janakiev.com/blog/python-background/ */
+chmod +x test.py
+nohup /path/to/test.py &
+nohup python /path/to/test.py &
+nohup /path/to/test.py > output.log &
+nohup python /path/to/test.py > output.log &
+ps ax | grep test.py
+kill PID
+pkill -f test.py
