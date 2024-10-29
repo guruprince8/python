@@ -2,6 +2,7 @@ from configparser import ConfigParser
 
 """
     function to load configuration taking filename and section as input parameters
+    returns a dictionary
 """
 def load_config(filename="database.ini",section="postgres"):
     parser = ConfigParser()
