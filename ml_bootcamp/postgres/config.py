@@ -1,8 +1,9 @@
 from configparser import ConfigParser
 
 """
-    function to load configuration taking filename and section as input parameters
+    function to load database configuration taking filename and section as input parameters
     returns a dictionary
+    currently supported databases are postgres
 """
 def load_config(filename="database.ini",section="postgres"):
     parser = ConfigParser()
