@@ -22,6 +22,11 @@ def load_config(filename="database.ini", section="postgres"):
     return dbconfig
 
 
+"""
+    function executes query and return the result set
+"""
+
+
 def execute_query(query: str):
     configuration = load_config()
     results = []

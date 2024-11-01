@@ -1,9 +1,7 @@
 import numpy as np
 from flask import Flask, jsonify, request
-import json
 from datetime import datetime
-from postgresql import execute_query
-
+from database import execute_query
 from model.engine import PR_ENGINE_CLASSES
 
 app = Flask(__name__)
