@@ -1,3 +1,4 @@
+import os
 import nltk
 import requests
 from bs4 import BeautifulSoup
@@ -16,3 +17,16 @@ soup = BeautifulSoup(response.text)
 text = "Natural language processing (NLP) is a field of computer science, artificial intelligence and computational linguistics concerned with the interactions between computers and human (natural) languages, and, in particular, concerned with programming computers to fruitfully process large natural language corpora. Challenges in natural language processing frequently involve natural language understanding, natural language generation (frequently from formal, machine-readable logical forms), connecting language and machine perception, managing human-computer dialog systems, or some combination thereof."
 print(sent_tokenize(text))
 print(word_tokenize(text))
+
+try:
+    version_file = os.path.join(os.path.dirname(__file__),"VERSION")
+    with open(version_file) as infile:
+        __version__ = infile.read().strip()
+except NameError:
+    __version__ = "unknown (running code interactively?)"
+except OSError as ex:
+    __version__ = "unknown (%s)" % ex
+
+print(__version__)
+if __doc__ is not None:
+    __doc__ += "\n@version: " + __version__
