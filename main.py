@@ -1,37 +1,18 @@
 from flask import Flask, jsonify, request
-from waitress import serve
 from flask_restful import Resource, Api
+from waitress import serve
+from web.default import DefaultRouter
+from web.hello import HelloRouter
+from web.square import SquareRouter
 
 
 app = Flask(__name__)
 api = Api(app)
 
+api.add_resource(HelloRouter, '/hello')
+api.add_resource(SquareRouter, '/square/<int:num>')
+api.add_resource(DefaultRouter,"/")
 
-class Hello(Resource):
-    def get(self):
-        return jsonify({'message': 'hello world'})
-
-    def post(self):
-        data = request.get_json()
-        return jsonify({'data': data})
-
-
-class Square(Resource):
-    def get(self, num):
-        return jsonify(({'square': num ** 2}))
-
-
-@app.route('/', methods=['GET', 'POST'])
-def home():
-    if request.method == 'GET':
-        data = 'hello world'
-        return jsonify({'data': data})
-
-
-api.add_resource(Hello, '/hello')
-api.add_resource(Square, '/square/<int:num>')
-
-print(__name__)
 if __name__ == '__main__':
     context = ('./certs/tomcat.crt', './certs/tomcat.key')
     #serve(app, host="0.0.0.0", port=5001, url_scheme='https')
