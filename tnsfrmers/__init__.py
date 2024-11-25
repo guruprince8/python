@@ -1,6 +1,11 @@
 from transformers import pipelines
 from transformers import pipeline
 
+__author__ = "Gurubrahmanandam Ekambaram"
+__version__ = "0.0.0"
+__copyright__ = "Copyright (c) 2024- Gurubrahmanandam Ekambaram"
+# Use of this source code is governed by the GNU license.
+__license__ = "GNU"
 
 def classify_text(email):
     classifier = pipeline('zero-shot-classification', model='facebook/bart-large-mnli')

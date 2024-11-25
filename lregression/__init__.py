@@ -4,6 +4,12 @@ import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.neighbors import KNeighborsRegressor
 
+__author__ = "Gurubrahmanandam Ekambaram"
+__version__ = "0.0.0"
+__copyright__ = "Copyright (c) 2024- Gurubrahmanandam Ekambaram"
+# Use of this source code is governed by the GNU license.
+__license__ = "GNU"
+
 data_root = "https://github.com/ageron/data/raw/main/"
 lifesat = pd.read_csv(data_root + "lifesat/lifesat.csv")
 # print(lifesat)

@@ -1,13 +1,19 @@
-from configparser import ConfigParser
 
+from configparser import ConfigParser
 import psycopg2
+
+
+__author__ = "Gurubrahmanandam Ekambaram"
+__version__ = "0.0.0"
+__copyright__ = "Copyright (c) 2024- Gurubrahmanandam Ekambaram"
+# Use of this source code is governed by the GNU license.
+__license__ = "GNU"
 
 """
     function to load database configuration taking filename and section as input parameters
     returns a dictionary
     currently supported databases are postgres
 """
-
 
 def load_config(filename="database.ini", section="postgres"):
     parser = ConfigParser()
