@@ -6,6 +6,7 @@ from web.hello import HelloRouter
 from web.square import SquareRouter
 from web.ml import MLRouter
 from web.wiki import WikiRouter
+from web.dsa import DSARouter
 import web.wiki
 
 
@@ -16,6 +17,7 @@ api.add_resource(HelloRouter, '/hello')
 api.add_resource(SquareRouter, '/square/<int:num>')
 api.add_resource(MLRouter, '/ml')
 api.add_resource(WikiRouter, '/wiki')
+api.add_resource(DSARouter, '/dsa')
 api.add_resource(DefaultRouter, "/")
 
 if __name__ == '__main__':
