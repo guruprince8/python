@@ -1,0 +1,36 @@
+-- ML DEV SCHEMA
+-- SCHEMA: ml_dev
+-- DROP SCHEMA IF EXISTS ml_dev ;
+
+CREATE SCHEMA IF NOT EXISTS ml_dev
+    AUTHORIZATION postgres;
+
+GRANT ALL ON SCHEMA ml_dev TO postgres;
+
+ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA ml_dev
+GRANT ALL ON TABLES TO postgres;
+
+ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA ml_dev
+GRANT ALL ON SEQUENCES TO postgres;
+
+ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA ml_dev
+GRANT EXECUTE ON FUNCTIONS TO postgres WITH GRANT OPTION;
+
+ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA ml_dev
+GRANT USAGE ON TYPES TO postgres WITH GRANT OPTION;
+
+
+-- Table: ml_dev.names
+
+-- DROP TABLE IF EXISTS ml_dev.names;
+
+CREATE TABLE IF NOT EXISTS ml_dev.names
+(
+    name character varying COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT names_pkey PRIMARY KEY (name)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS ml_dev.names
+    OWNER to postgres;
