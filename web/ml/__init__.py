@@ -1,7 +1,7 @@
 from flask import jsonify, request, make_response
 from flask_restful import Resource
 import csv
-import database
+from database import DBOperations
 
 __author__ = "Gurubrahmanandam Ekambaram"
 __version__ = "0.0.0"
