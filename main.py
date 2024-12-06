@@ -1,3 +1,4 @@
+import os
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
 from waitress import serve
@@ -8,14 +9,12 @@ from web.ml import MLRouter
 from web.wiki import WikiRouter
 from web.dsa import DSARouter
 from web.file import FileRouter
-from dsa import ArrayStructure
+import platform
 
-
+os.environ['DYLD_LIBRARY_PATH'] = '/Library/PostgreSQL/15/lib'
+print(os.uname())
 app = Flask(__name__)
 api = Api(app)
-asr = ArrayStructure()
-print(asr.data)
-
 
 api.add_resource(HelloRouter, '/hello')
 api.add_resource(SquareRouter, '/square/<int:num>')
@@ -25,6 +24,7 @@ api.add_resource(DSARouter, '/dsa')
 api.add_resource(FileRouter, '/file')
 api.add_resource(DefaultRouter, "/")
 
+os.environ['DYLD_LIBRARY_PATH'] = '/Library/PostgreSQL/15/lib'
 
 if __name__ == '__main__':
     context = ('./certs/tomcat.crt', './certs/tomcat.key')
