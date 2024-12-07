@@ -11,8 +11,9 @@ from web.dsa import DSARouter
 from web.file import FileRouter
 import platform
 
+from database import DBConnectionPool
+
 os.environ['DYLD_LIBRARY_PATH'] = '/Library/PostgreSQL/15/lib'
-print(os.uname())
 app = Flask(__name__)
 api = Api(app)
 
@@ -24,6 +25,8 @@ api.add_resource(DSARouter, '/dsa')
 api.add_resource(FileRouter, '/file')
 api.add_resource(DefaultRouter, "/")
 
+pool = DBConnectionPool()
+print(pool)
 os.environ['DYLD_LIBRARY_PATH'] = '/Library/PostgreSQL/15/lib'
 
 if __name__ == '__main__':

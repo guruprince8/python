@@ -1,5 +1,8 @@
 from configparser import ConfigParser
 import psycopg2
+# import os
+import pkgutil
+from random import randint
 
 __author__ = "Gurubrahmanandam Ekambaram"
 __version__ = "0.0.0"
@@ -8,49 +11,71 @@ __copyright__ = "Copyright (c) 2024- Gurubrahmanandam Ekambaram"
 __license__ = "GNU"
 
 
-class DBOperations:
+def load_config(filename="database.ini", section="postgres"):
     """
-     Class used to handle all database operations
+        function to load database configuration taking filename and section as input parameters
+        returns a dictionary
+        currently supported databases are
+        1. postgres
     """
+    parser = ConfigParser()
+    content = pkgutil.get_data('database', filename)
+    if content is not None:
+        parser.read_string(content.decode('utf-8'))
+    else:
+        raise Exception('failed to load database configuration from file ', filename)
+    dbconfig = {}
+    print(parser.sections())
+    if parser.has_section(section):
+        params = parser.items(section)
+        for param in params:
+            dbconfig[param[0]] = param[1]
+    else:
+        raise Exception('Section {0} is not found in filename {1}'.format(section, filename))
+    return dbconfig
 
-    def __init__(self):
-        print('init')
 
-    def load_config(self, filename="database.ini", section="postgres"):
-        """
-            function to load database configuration taking filename and section as input parameters
-            returns a dictionary
-            currently supported databases are
-             1. postgres
-        """
-        parser = ConfigParser()
-        parser.read(filename)
-        dbconfig = {}
-        if parser.has_section(section):
-            params = parser.items(section)
-            for param in params:
-                dbconfig[param[0]] = param[1]
-        else:
-            raise Exception('Section {0} is not found in filename'.format(section, filename))
-        return dbconfig
+def db_connection():
+    conn = None
+    try:
+        dbconfig = load_config(filename="database.ini", section="postgres")
+        conn = psycopg2.connect(**dbconfig)
+    except psycopg2.Error as err:
+        print(f"Database connection failed: {err}")
+    return conn
 
-    def execute_query(self, query: str):
-        """
-            function executes query and return the result set
-        """
-        configuration = self.load_config()
-        results = []
+
+class DBConnectionPool:
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(DBConnectionPool, cls).__new__(cls)
+            cls.instance.max_connections = 10
+            cls.instance.active_connections = [0] * cls.instance.max_connections
+            for index, value in enumerate(cls.instance.active_connections):
+                cls.instance.active_connections[index] = db_connection()
+        return cls.instance
+
+
+def execute_query(query: str):
+    results = []
+    rowcount = 0
+    record = {}
+    """
+        function executes query and return the result set
+    """
+    connection = DBConnectionPool().instance.active_connections[randint(0, 9)]
+    if connection is not None:
         try:
-            with psycopg2.connect(**configuration) as conn:
-                print('connected to sql')
-                with conn.cursor() as cur:
-                    cur.execute(query)
-                    print(f'Total number of records fetched are {0}', cur.rowcount)
+            with connection.cursor() as cur:
+                cur.execute(query)
+                rowcount = cur.rowcount
+                column_names = [desc[0] for desc in cur.description]
+                row = cur.fetchone()
+                while row is not None:
+                    for index, value in enumerate(column_names):
+                        record[column_names[index]] = row[index]
+                    results.append(record)
                     row = cur.fetchone()
-                    while row is not None:
-                        row = cur.fetchone()
-                        if row is not None:
-                            results.append({'pzjar': row[0], 'pzpackage': row[1], 'pzclass': row[2]})
         except (psycopg2.DatabaseError, Exception) as err:
             print("Error is ", err)
-        return results
+    return results, rowcount

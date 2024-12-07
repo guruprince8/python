@@ -1,7 +1,7 @@
 from flask import jsonify, request, make_response
 from flask_restful import Resource
 import csv
-from database import DBOperations
+from database import execute_query
 
 __author__ = "Gurubrahmanandam Ekambaram"
 __version__ = "0.0.0"
@@ -25,7 +25,7 @@ class MLRouter(Resource):
         if dataset == "naukri_data_science_jobs_india":
             if source == "database":
                 response = make_response(
-                    {'data': database.execute_query("select * from ml_dev.naukri_data_science_jobs_india;")}, 200)
+                    {'data': execute_query("select * from ml_dev.naukri_data_science_jobs_india;")}, 200)
             elif source == "file":
                 with open('../../datasets/naukri_data_science_jobs_india.csv', 'r') as csv_file:
                     csv_reader = csv.DictReader(csv_file)
