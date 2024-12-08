@@ -62,6 +62,7 @@ def execute_query(query: str):
     record = {}
     """
         function executes query and return the result set
+        takes sql query as input parameter
     """
     connection = DBConnectionPool().instance.active_connections[randint(0, 9)]
     if connection is not None:
@@ -78,4 +79,6 @@ def execute_query(query: str):
                     row = cur.fetchone()
         except (psycopg2.DatabaseError, Exception) as err:
             print("Error is ", err)
-    return results, rowcount
+    else:
+        raise Exception('failed execute query due as db connection not acquired')
+    return results

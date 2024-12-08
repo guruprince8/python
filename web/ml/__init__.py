@@ -3,6 +3,8 @@ from flask_restful import Resource
 import csv
 from database import execute_query
 
+
+
 __author__ = "Gurubrahmanandam Ekambaram"
 __version__ = "0.0.0"
 __copyright__ = "Copyright (c) 2024- Gurubrahmanandam Ekambaram"
@@ -21,11 +23,12 @@ class MLRouter(Resource):
         """
         dataset = request.args.get("dataset")
         source = request.args.get("source")
-        response = {'Access-Control-Allow-Origin':'http://localhost:3000'}
+        response = {'Access-Control-Allow-Origin':'https://localhost:3000'}
         if dataset == "naukri_data_science_jobs_india":
             if source == "database":
                 response = make_response(
                     {'data': execute_query("select * from ml_dev.naukri_data_science_jobs_india;")}, 200)
+                response.headers['Access-Control-Allow-Origin']='https://localhost:3000'
             elif source == "file":
                 with open('../../datasets/naukri_data_science_jobs_india.csv', 'r') as csv_file:
                     csv_reader = csv.DictReader(csv_file)

@@ -9,12 +9,17 @@ from web.ml import MLRouter
 from web.wiki import WikiRouter
 from web.dsa import DSARouter
 from web.file import FileRouter
-import platform
-
 from database import DBConnectionPool
+from flask_cors import CORS
+
+# initiate database connection pool
+# for any reason connection pool failed skip the initialization of environment
+pool = DBConnectionPool()
+
 
 os.environ['DYLD_LIBRARY_PATH'] = '/Library/PostgreSQL/15/lib'
 app = Flask(__name__)
+cors = CORS(app, resources={r"*": {"origins": "*"}})
 api = Api(app)
 
 api.add_resource(HelloRouter, '/hello')
@@ -25,8 +30,6 @@ api.add_resource(DSARouter, '/dsa')
 api.add_resource(FileRouter, '/file')
 api.add_resource(DefaultRouter, "/")
 
-pool = DBConnectionPool()
-print(pool)
 os.environ['DYLD_LIBRARY_PATH'] = '/Library/PostgreSQL/15/lib'
 
 if __name__ == '__main__':
